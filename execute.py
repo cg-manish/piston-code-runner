@@ -25,7 +25,7 @@ def execute_code(language: Language, function_name: str, code: str, test_cases: 
     for idx, case in enumerate(test_cases):
         args = case["input"]
         exec_code = wrap_code_runner(language, code, function_name, args)
-        # print(exec_code)    
+        print(exec_code)    
 
         payload = {
             "language": language.name.lower(),

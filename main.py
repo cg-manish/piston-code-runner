@@ -39,8 +39,8 @@ def execute():
 
         return jsonify({"data":json_data, "status_code":200})
     except Exception as e:
-        print(e)
-        return {"error":"error"}
+        # print(str(e))
+        return {"error":str(e)}
 
 
 

@@ -1,104 +1,104 @@
 [
-    {
-        "status": 0,
-        "error": null,
-        "data": {
-            "run": {
-                "signal": null,
-                "stdout": "[3, 45]\n",
-                "stderr": "",
-                "code": 0,
-                "output": "[3, 45]\n",
-                "memory": 5184000,
-                "message": null,
-                "status": null,
-                "cpu_time": 38,
-                "wall_time": 44
-            },
-            "language": "python",
-            "version": "3.12.0"
-        },
-        "case": {
-            "input": [
-                [
-                    2,
-                    7,
-                    11,
-                    15
-                ],
-                9
-            ],
-            "expected_output": [
-                0,
-                1
-            ]
-        }
-    },
-    {
-        "status": 0,
-        "error": null,
-        "data": {
-            "run": {
-                "signal": null,
-                "stdout": "[3, 45]\n",
-                "stderr": "",
-                "code": 0,
-                "output": "[3, 45]\n",
-                "memory": 5248000,
-                "message": null,
-                "status": null,
-                "cpu_time": 37,
-                "wall_time": 40
-            },
-            "language": "python",
-            "version": "3.12.0"
-        },
-        "case": {
-            "input": [
-                [
-                    3,
-                    2,
-                    4
-                ],
-                6
-            ],
-            "expected_output": [
-                1,
-                2
-            ]
-        }
-    },
-    {
-        "status": 0,
-        "error": null,
-        "data": {
-            "run": {
-                "signal": null,
-                "stdout": "[0, 1]\n",
-                "stderr": "",
-                "code": 0,
-                "output": "[0, 1]\n",
-                "memory": 5072000,
-                "message": null,
-                "status": null,
-                "cpu_time": 36,
-                "wall_time": 40
-            },
-            "language": "python",
-            "version": "3.12.0"
-        },
-        "case": {
-            "input": [
-                [
-                    3,
-                    3
-                ],
-                6
-            ],
-            "expected_output": [
-                0,
-                1
-            ]
-        }
-    }
+ {
+  "status": 0,
+  "error": null,
+  "data": {
+   "run": {
+    "signal": null,
+    "stdout": "",
+    "stderr": "main.java:16: error: illegal start of expression\n        int[] arr = new int[]{ [2, 7, 11, 15], 9 };\n                               ^\nmain.java:16: error: ']' expected\n        int[] arr = new int[]{ [2, 7, 11, 15], 9 };\n                                 ^\nmain.java:16: error: <identifier> expected\n        int[] arr = new int[]{ [2, 7, 11, 15], 9 };\n                                  ^\nmain.java:17: error: 'var' is not allowed here\n        var result = sol.twoSum(arr);\n        ^\nmain.java:18: error: <identifier> expected\n        System.out.println(result);\n                          ^\nmain.java:18: error: <identifier> expected\n        System.out.println(result);\n                                 ^\nmain.java:20: error: class, interface, or enum expected\n}\n^\n7 errors\nerror: compilation failed\n",
+    "code": 1,
+    "output": "main.java:16: error: illegal start of expression\n        int[] arr = new int[]{ [2, 7, 11, 15], 9 };\n                               ^\nmain.java:16: error: ']' expected\n        int[] arr = new int[]{ [2, 7, 11, 15], 9 };\n                                 ^\nmain.java:16: error: <identifier> expected\n        int[] arr = new int[]{ [2, 7, 11, 15], 9 };\n                                  ^\nmain.java:17: error: 'var' is not allowed here\n        var result = sol.twoSum(arr);\n        ^\nmain.java:18: error: <identifier> expected\n        System.out.println(result);\n                          ^\nmain.java:18: error: <identifier> expected\n        System.out.println(result);\n                                 ^\nmain.java:20: error: class, interface, or enum expected\n}\n^\n7 errors\nerror: compilation failed\n",
+    "memory": 42432000,
+    "message": "Exited with error status 1",
+    "status": "RE",
+    "cpu_time": 782,
+    "wall_time": 529
+   },
+   "language": "java",
+   "version": "15.0.2"
+  },
+  "case": {
+   "input": [
+    [
+     2,
+     7,
+     11,
+     15
+    ],
+    9
+   ],
+   "expected_output": [
+    0,
+    1
+   ]
+  }
+ },
+ {
+  "status": 0,
+  "error": null,
+  "data": {
+   "run": {
+    "signal": null,
+    "stdout": "",
+    "stderr": "main.java:16: error: illegal start of expression\n        int[] arr = new int[]{ [3, 2, 4], 6 };\n                               ^\nmain.java:16: error: ']' expected\n        int[] arr = new int[]{ [3, 2, 4], 6 };\n                                 ^\nmain.java:16: error: <identifier> expected\n        int[] arr = new int[]{ [3, 2, 4], 6 };\n                                  ^\nmain.java:17: error: 'var' is not allowed here\n        var result = sol.twoSum(arr);\n        ^\nmain.java:18: error: <identifier> expected\n        System.out.println(result);\n                          ^\nmain.java:18: error: <identifier> expected\n        System.out.println(result);\n                                 ^\nmain.java:20: error: class, interface, or enum expected\n}\n^\n7 errors\nerror: compilation failed\n",
+    "code": 1,
+    "output": "main.java:16: error: illegal start of expression\n        int[] arr = new int[]{ [3, 2, 4], 6 };\n                               ^\nmain.java:16: error: ']' expected\n        int[] arr = new int[]{ [3, 2, 4], 6 };\n                                 ^\nmain.java:16: error: <identifier> expected\n        int[] arr = new int[]{ [3, 2, 4], 6 };\n                                  ^\nmain.java:17: error: 'var' is not allowed here\n        var result = sol.twoSum(arr);\n        ^\nmain.java:18: error: <identifier> expected\n        System.out.println(result);\n                          ^\nmain.java:18: error: <identifier> expected\n        System.out.println(result);\n                                 ^\nmain.java:20: error: class, interface, or enum expected\n}\n^\n7 errors\nerror: compilation failed\n",
+    "memory": 40344000,
+    "message": "Exited with error status 1",
+    "status": "RE",
+    "cpu_time": 793,
+    "wall_time": 531
+   },
+   "language": "java",
+   "version": "15.0.2"
+  },
+  "case": {
+   "input": [
+    [
+     3,
+     2,
+     4
+    ],
+    6
+   ],
+   "expected_output": [
+    1,
+    2
+   ]
+  }
+ },
+ {
+  "status": 0,
+  "error": null,
+  "data": {
+   "run": {
+    "signal": null,
+    "stdout": "",
+    "stderr": "main.java:16: error: illegal start of expression\n        int[] arr = new int[]{ [3, 3], 6 };\n                               ^\nmain.java:16: error: ']' expected\n        int[] arr = new int[]{ [3, 3], 6 };\n                                 ^\nmain.java:16: error: <identifier> expected\n        int[] arr = new int[]{ [3, 3], 6 };\n                                  ^\nmain.java:17: error: 'var' is not allowed here\n        var result = sol.twoSum(arr);\n        ^\nmain.java:18: error: <identifier> expected\n        System.out.println(result);\n                          ^\nmain.java:18: error: <identifier> expected\n        System.out.println(result);\n                                 ^\nmain.java:20: error: class, interface, or enum expected\n}\n^\n7 errors\nerror: compilation failed\n",
+    "code": 1,
+    "output": "main.java:16: error: illegal start of expression\n        int[] arr = new int[]{ [3, 3], 6 };\n                               ^\nmain.java:16: error: ']' expected\n        int[] arr = new int[]{ [3, 3], 6 };\n                                 ^\nmain.java:16: error: <identifier> expected\n        int[] arr = new int[]{ [3, 3], 6 };\n                                  ^\nmain.java:17: error: 'var' is not allowed here\n        var result = sol.twoSum(arr);\n        ^\nmain.java:18: error: <identifier> expected\n        System.out.println(result);\n                          ^\nmain.java:18: error: <identifier> expected\n        System.out.println(result);\n                                 ^\nmain.java:20: error: class, interface, or enum expected\n}\n^\n7 errors\nerror: compilation failed\n",
+    "memory": 39640000,
+    "message": "Exited with error status 1",
+    "status": "RE",
+    "cpu_time": 765,
+    "wall_time": 484
+   },
+   "language": "java",
+   "version": "15.0.2"
+  },
+  "case": {
+   "input": [
+    [
+     3,
+     3
+    ],
+    6
+   ],
+   "expected_output": [
+    0,
+    1
+   ]
+  }
+ }
 ]

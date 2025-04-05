@@ -54,9 +54,10 @@ class Program {{
 def wrap_java_code_runner(user_code: str, function_name: str, args: list) -> str:
     args_formatted = ", ".join(map(str, args))
     return f"""
-public class Solution {{
-    {user_code}
 
+       {user_code}
+
+public class Program {{
     public static void main(String[] args) {{
         Solution sol = new Solution();
         int[] arr = new int[]{{ {args_formatted} }};
@@ -111,7 +112,7 @@ func main() {{
 def wrap_scala_code_runner(user_code: str, function_name: str, args: list) -> str:
     args_formatted = ", ".join(map(str, args))
     return f"""
-object Solution {{
+object Program {{
     {user_code}
 
     def main(args: Array[String]): Unit = {{
