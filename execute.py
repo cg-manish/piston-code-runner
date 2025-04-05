@@ -1,5 +1,5 @@
+import os
 import requests
-import json
 from models.models import Language, CodeExecutionResult
 from utils.code_wrapper import *
 
@@ -13,7 +13,7 @@ def validate_function_in_code(function_name: str, user_code: str, language: str)
     return False
 
 
-def execute(language: Language, function_name: str, code: str, test_cases: list):
+def execute_code(language: Language, function_name: str, code: str, test_cases: list):
     if not validate_function_in_code(function_name, code, language):
         return [{"error": f"Function '{function_name}' not found in submitted code."}]
     
@@ -51,28 +51,30 @@ def execute(language: Language, function_name: str, code: str, test_cases: list)
     return results
 
 
-def entrypoint():
 
-    test_cases = [
-        {"input":[[2,7,11,15],9], "expected_output": [1,2,3,4,5]},
-        {"input":[ [3,2,4],6], "expected_output": [12,9,8,5,4,5,3]},
-        {"input": [[3,3],6], "expected_output": [12,9,8,5,4,15,10]},
-    ]
 
-    execution_results = execute( Language("python", "3.12.0"),"rotate" , user_code, test_cases)
+# def entrypoint():
+
+#     test_cases = [
+#         {"input":[[2,7,11,15],9], "expected_output": [1,2,3,4,5]},
+#         {"input":[ [3,2,4],6], "expected_output": [12,9,8,5,4,5,3]},
+#         {"input": [[3,3],6], "expected_output": [12,9,8,5,4,15,10]},
+#     ]
+
+#     execution_results = execute( Language("python", "3.12.0"),"rotate" , user_code, test_cases)
     
-    if execution_results:
-        single=  execution_results[0]
-        stdout= single["run"]["stdout"] if  single["run"]["stderr"] == '' else ""
+#     if execution_results:
+#         single=  execution_results[0]
+#         stdout= single["run"]["stdout"] if  single["run"]["stderr"] == '' else ""
 
-        if stdout:
-            parse_returned_from_stdout()
+#         if stdout:
+#             parse_returned_from_stdout()
 
-    print(len(execution_results))
+#     print(len(execution_results))
 
 
-if __name__ == "__main__":
-    entrypoint()
+# if __name__ == "__main__":
+#     entrypoint()
 
 
 
