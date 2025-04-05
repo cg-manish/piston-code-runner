@@ -16,72 +16,46 @@ def validate_function_in_code(function_name: str, user_code: str, language: str)
     return False
 
 
-def execute(language: str, function_name: str, code: str, test_cases: list):
+
+def execute(language: Language, function_name: str, code: str, test_cases: list):
     if not validate_function_in_code(function_name, code, language):
         return [{"error": f"Function '{function_name}' not found in submitted code."}]
 
-    results = []
-
     for idx, case in enumerate(test_cases):
         args = case["input"]
-        expected_output = case["expected_output"]
-
         exec_code = wrap_code_runner(language, code, function_name, args)
-        
-        if not exec_code:
-            results.append({
-                "test_case": idx + 1,
-                "status": "error",
-                "error": f"Language not supported: {language}"
-            })
-            continue
-
         payload = {
-            "language": language.lower(),
-            "files": [{"name": "main", "content": exec_code}],
+            "language": language.name.lower(),
+            "version": language.version,
+            "files": [
+                {"name": "main", "content": exec_code}
+                ],
+            "stdin": "",
+            "compile_timeout": 10000,
+            "run_timeout": 3000,
+            "compile_cpu_time": 10000,
+            "run_cpu_time": 3000,
+            "compile_memory_limit": -1,
+            "run_memory_limit": -1
         }
-
         try:
             response = requests.post(PISTON_URL, json=payload)
+
             response.raise_for_status()
             result_data = response.json()
-
-            stdout = result_data['run'].get('stdout', '').strip()
-            stderr = result_data['run'].get('stderr', '').strip()
-
-            if stderr:
-                results.append({
-                    "test_case": idx + 1,
-                    "status": "error",
-                    "error": stderr
-                })
-            else:
-                try:
-                    output = json.loads(stdout) if stdout.startswith("[") else eval(stdout)
-                except:
-                    output = stdout
-                passed = output == expected_output
-                results.append({
-                    "test_case": idx + 1,
-                    "status": "passed" if passed else "failed",
-                    "expected": expected_output,
-                    "actual": output,
-                })
-
+            run_info=   print(result_data.get("run",{}))
+            print(run_info)
+            return run_info
         except Exception as e:
-            results.append({
-                "test_case": idx + 1,
-                "status": "error",
-                "error": str(e)
-            })
+            print("Exception occurred")
+            return e
 
-    return results
 
 
 def wrap_code_runner(language: str, user_code: str, function_name: str, args: list) -> str:
-    if language.lower() == "python":
+    if language.name.lower() == "python":
         return wrap_python_code_runner(user_code, function_name, args)
-    elif language.lower() == "csharp":
+    elif language.name.lower() == "csharp":
         return wrap_csharp_code_runner(user_code, function_name, args)
     else:
         return None
@@ -117,24 +91,30 @@ class Program {{
 
 
 
+
+
 # Example usage
 if __name__ == "__main__":
     user_python_code = """
 class Solution(object):
     def rotate(self, nums, k):
+        print("k xa khabar")
+        test=[1,2,3,4,5]
+        print(f"jai shri ram: {test}")
         return [1,2,4,5]
 """
 
     test_cases = [
-        {"input": [1,2,4,5,8,9,12], "expected_output": [12,9,8,5,4,2]},
+        {"input":[ [1,2,4,5,8,9,12],2], "expected_output": [1,2,3,4,5]},
         # {"input": [3,5,4,5,8,9,12], "expected_output": [12,9,8,5,4,5,3]},
         # {"input": [10,15,4,5,8,9,12], "expected_output": [12,9,8,5,4,15,10]},
     ]
 
     results = execute( Language("python", "3.12.0"),"rotate" , user_python_code, test_cases)
 
-    for r in results:
-        print(json.dumps(r, indent=2))
+
+    # for r in results:
+    #     print(json.dumps(r, indent=2))
 
 
 
