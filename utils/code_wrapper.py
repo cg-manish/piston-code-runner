@@ -2,19 +2,29 @@ import json
 from ntpath import join
 import os
 import random
+from models.models import Language
 
-def wrap_code_runner(language: str, user_code: str, function_name: str, args: list) -> str:
-    if language.name.lower() == "python":
+
+def wrap_code_runner(language: Language, user_code: str, function_name: str, args: list) -> str:
+    print(f"Language is: {language.name}")
+    
+    lang= language.name.lower()
+
+    if lang == "python":
         return wrap_python_code_runner(user_code, function_name, args)
-    elif language.name.lower() == "csharp":
+    elif lang == "csharp":
         return wrap_csharp_code_runner(user_code, function_name, args)
+    elif lang =="java":
+        return wrap_java_code_runner(user_code, function_name, args)
     else:
         return None
 
 # Python wrapper
 def wrap_python_code_runner(user_code: str, function_name: str, args: list) -> str:
     args_str = json.dumps(args)[1:-1]
-    return f"""{user_code}
+    return f"""
+from typing import List
+{user_code}
 
 if __name__ == "__main__":
     sol = Solution()
@@ -241,4 +251,4 @@ def get_random_sample_code():
     code_file=open("./sample_user_codes"+"/"+file_name, "r")
     print(code_file.read())
 
-get_random_sample_code()
+# get_random_sample_code()

@@ -1,0 +1,104 @@
+[
+    {
+        "status": 0,
+        "error": null,
+        "data": {
+            "run": {
+                "signal": null,
+                "stdout": "[3, 45]\n",
+                "stderr": "",
+                "code": 0,
+                "output": "[3, 45]\n",
+                "memory": 5184000,
+                "message": null,
+                "status": null,
+                "cpu_time": 38,
+                "wall_time": 44
+            },
+            "language": "python",
+            "version": "3.12.0"
+        },
+        "case": {
+            "input": [
+                [
+                    2,
+                    7,
+                    11,
+                    15
+                ],
+                9
+            ],
+            "expected_output": [
+                0,
+                1
+            ]
+        }
+    },
+    {
+        "status": 0,
+        "error": null,
+        "data": {
+            "run": {
+                "signal": null,
+                "stdout": "[3, 45]\n",
+                "stderr": "",
+                "code": 0,
+                "output": "[3, 45]\n",
+                "memory": 5248000,
+                "message": null,
+                "status": null,
+                "cpu_time": 37,
+                "wall_time": 40
+            },
+            "language": "python",
+            "version": "3.12.0"
+        },
+        "case": {
+            "input": [
+                [
+                    3,
+                    2,
+                    4
+                ],
+                6
+            ],
+            "expected_output": [
+                1,
+                2
+            ]
+        }
+    },
+    {
+        "status": 0,
+        "error": null,
+        "data": {
+            "run": {
+                "signal": null,
+                "stdout": "[0, 1]\n",
+                "stderr": "",
+                "code": 0,
+                "output": "[0, 1]\n",
+                "memory": 5072000,
+                "message": null,
+                "status": null,
+                "cpu_time": 36,
+                "wall_time": 40
+            },
+            "language": "python",
+            "version": "3.12.0"
+        },
+        "case": {
+            "input": [
+                [
+                    3,
+                    3
+                ],
+                6
+            ],
+            "expected_output": [
+                0,
+                1
+            ]
+        }
+    }
+]
