@@ -38,12 +38,12 @@ def execute(language: Language, function_name: str, code: str, test_cases: list)
         }
         try:
             response = requests.post(PISTON_URL, json=payload)
-            
+
             response.raise_for_status()
             result_data = response.json()
             run_info=   print(result_data.get("run",{}))
             print(result_data)
-            results.append(CodeExecutionResult(case=case,user_code=code, status=0, error= None, data= result_data))
+            results.append(CodeExecutionResult(case=case, status=0, error= None, data= result_data))
 
         except Exception as e:
             print("Exception occurred")
@@ -51,24 +51,31 @@ def execute(language: Language, function_name: str, code: str, test_cases: list)
     return results
 
 
-if __name__ == "__main__":
-    user_python_code = """
-class Solution(object):
-    def rotate(self, nums, k):
-        print("k xa khabar")
-        test=[1,2,3,4,5]
-        print(f"ouch : {test}")
-        return [1,2,4,5]
-"""
+def entrypoint():
 
     test_cases = [
-        {"input":[ [1,2,4,5,8,9,12],2], "expected_output": [1,2,3,4,5]},
-        {"input":[ [3,5,4,5,8,9,12],2], "expected_output": [12,9,8,5,4,5,3]},
-        {"input": [[10,15,4,5,8,9,12],5], "expected_output": [12,9,8,5,4,15,10]},
+        {"input":[[2,7,11,15],9], "expected_output": [1,2,3,4,5]},
+        {"input":[ [3,2,4],6], "expected_output": [12,9,8,5,4,5,3]},
+        {"input": [[3,3],6], "expected_output": [12,9,8,5,4,15,10]},
     ]
 
-    results = execute( Language("python", "3.12.0"),"rotate" , user_python_code, test_cases)
-    print(len(results))
+    execution_results = execute( Language("python", "3.12.0"),"rotate" , user_code, test_cases)
+    
+    if execution_results:
+        single=  execution_results[0]
+        stdout= single["run"]["stdout"] if  single["run"]["stderr"] == '' else ""
+
+        if stdout:
+            parse_returned_from_stdout()
+
+    print(len(execution_results))
+
+
+if __name__ == "__main__":
+    entrypoint()
+
+
+
 
 
 """ Data expected by code executor: 

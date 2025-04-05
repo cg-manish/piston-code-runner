@@ -36,3 +36,12 @@ class Program {{
     }}
 }}
 """
+
+def parse_returned_from_stdout(stdout, output):
+     data= input.split("\n")
+     print(data[-2])
+
+
+input='k xa khabar\nouch : [1, 2, 3, 4, 5]\n[1, 2, 4, 5]\n'
+
+parse_returned_from_stdout(input, input)

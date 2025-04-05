@@ -10,7 +10,6 @@ class CodeExecutionResult:
             self.status=status
             self.error=error
             self.data=data
-            self.user_code=user_code
             self.case=case
     def __repr__(self):
-        return f"{self.status}, {self.error}, {self.data}, {self.user_code}, {self.case}"
+        return f"{self.status}, {self.error}, {self.data},{self.case}"
