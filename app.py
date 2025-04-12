@@ -4,8 +4,11 @@ import requests
 from execute import execute_code
 from models.models import Language
 import base64
+from flask_cors import CORS
 
 app = Flask(__name__)
+
+CORS(app, origins=["http://localhost:3000", "https://wecanhack.com"])
 
 @app.route('/health-check', methods=["GET"])
 def health_check():
