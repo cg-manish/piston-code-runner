@@ -1,0 +1,13 @@
+[Unit]
+Description=uwsgi instance to server code runner flask app
+After=network.target
+
+[Service]
+User=fake
+Group=fake
+WorkingDirectory=/home/fake/test-codes
+Environment="PATH=/home/fake/test-codes/venv/bin"
+ExecStart=/usr/bin/uwsgi --ini app.ini
+
+[Install]
+WantedBy=multi-user.target
