@@ -16,8 +16,91 @@ def wrap_code_runner(language: Language, user_code: str, function_name: str, arg
         return wrap_csharp_code_runner(user_code, function_name, args)
     elif lang =="java":
         return wrap_java_code_runner(user_code, function_name, args)
+    elif lang=="c++":
+        return wrap_cpp_runner(user_code, function_name, args)
+    elif lang=="javascript":
+        return wrap_js_runner(user_code, function_name, args)
     else:
         return None
+
+def convert_to_javascript_literal(value):
+    """
+    Recursively converts Python object to a valid JavaScript literal string.
+    Supports: int, str, bool, list (arrays), and nested lists.
+    """
+    if isinstance(value, str):
+        return f'"{value}"'
+    elif isinstance(value, bool):
+        return "true" if value else "false"
+    elif isinstance(value, (int, float)):
+        return str(value)
+    elif isinstance(value, list):
+        return "[" + ", ".join(convert_to_javascript_literal(item) for item in value) + "]"
+    else:
+        raise TypeError(f"Unsupported type: {type(value)}")
+
+def wrap_js_runner(user_code:str, function_name:str, args:list)->str:
+        js_args = ", ".join(convert_to_javascript_literal(arg) for arg in args)
+        template_code="""
+const sol = new Solution();
+console.log(sol.<<FUNCTION_NAME>>(<<ARGS>>));
+"""
+        template_code= template_code.replace("<<FUNCTION_NAME>>",function_name)
+        template_code= template_code.replace("<<ARGS>>", js_args)
+
+        final_code= f"{user_code} \n\n {template_code}"
+        
+        return final_code
+
+def wrap_cpp_runner(user_code:str, function_name:str, args:list)->str:
+    cplusplus_args = ", ".join(convert_to_cplusplus_literal(arg) for arg in args)
+
+    headers_code="""
+    #include <iostream>
+    #include <vector>
+    using namespace std;
+"""
+    template_code = """
+    int main() {
+        Solution solution;
+        vector<int> result = solution.<<FUNCTION_NAME>>(<<ARGS>>);
+        for (int num : result) {
+            cout << num << " ";
+        }
+        return 0;
+    }
+    """
+    template_code= template_code.replace("<<FUNCTION_NAME>>", function_name)
+    template_code= template_code.replace("<<ARGS>>", cplusplus_args)
+
+    final_code= f" {headers_code}\n{user_code}\n\n{template_code} \n\n"
+    return final_code
+
+
+
+def convert_to_cplusplus_literal(value):
+    """
+    Recursively converts Python object to C++ literal string.
+    Supports: int, str, bool, list (arrays), and nested lists.
+    """
+    if isinstance(value, str):
+        return f'"{value}"'
+    elif isinstance(value, bool):
+        return "true" if value else "false"
+    elif isinstance(value, (int, float)):
+        return str(value)
+    elif isinstance(value, list):
+        # Handle lists of lists (for multi-dimensional arrays)
+        if all(isinstance(x, list) for x in value):
+            inner = ",".join("{" + convert_to_cplusplus_literal(x) + "}" for x in value)
+            return f"{{{inner}}}"
+        # Handle char arrays
+        elif all(isinstance(x, str) and len(x) == 1 for x in value):
+            return f"{{" + ",".join(f"'{x}'" for x in value) + "}}"
+        else:
+            return "{" + ",".join(convert_to_cplusplus_literal(x) for x in value) + "}"
+    else:
+        raise TypeError(f"Unsupported type: {type(value)}")
 
 # Python wrapper
 def wrap_python_code_runner(user_code: str, function_name: str, args: list) -> str:
@@ -32,7 +115,7 @@ if __name__ == "__main__":
     print(result)
 """
 
-def __convert_to_csharp_literal__(value):
+def convert_to_csharp_literal(value):
     """
     Recursively converts Python object to C# literal string.
     Supports: int, str, bool, list (arrays), and nested lists.
@@ -46,19 +129,19 @@ def __convert_to_csharp_literal__(value):
     elif isinstance(value, list):
         # Handle lists of lists (for multi-dimensional arrays)
         if all(isinstance(x, list) for x in value):
-            inner = ",".join("{" + __convert_to_csharp_literal__(x) + "}" for x in value)
+            inner = ",".join("{" + convert_to_csharp_literal(x) + "}" for x in value)
             return f"new int[,]{{{inner}}}"
         # Handle char arrays
         elif all(isinstance(x, str) and len(x) == 1 for x in value):
             return f"new char[]{{" + ",".join(f"'{x}'" for x in value) + "}"
         else:
-            return "new int[]{" + ",".join(__convert_to_csharp_literal__(x) for x in value) + "}"
+            return "new int[]{" + ",".join(convert_to_csharp_literal(x) for x in value) + "}"
     else:
         raise TypeError(f"Unsupported type: {type(value)}")
     
 # C# Wrapper
 def wrap_csharp_code_runner(user_code: str, function_name: str, args: list) -> str:
-    csharp_args = ", ".join(__convert_to_csharp_literal__(arg) for arg in args)
+    csharp_args = ", ".join(convert_to_csharp_literal(arg) for arg in args)
 
     template_code="""
 using System;
@@ -118,6 +201,31 @@ public class Program {
     final_code=f"{template_code} \n\n{user_code}"
 
     return final_code
+
+
+def convert_to_cplusplus_literal(value):
+    """
+    Recursively converts Python object to C++ literal string.
+    Supports: int, str, bool, list (arrays), and nested lists.
+    """
+    if isinstance(value, str):
+        return f'"{value}"'
+    elif isinstance(value, bool):
+        return "true" if value else "false"
+    elif isinstance(value, (int, float)):
+        return str(value)
+    elif isinstance(value, list):
+        # Handle lists of lists (for multi-dimensional arrays)
+        if all(isinstance(x, list) for x in value):
+            inner = ",".join("{" + convert_to_cplusplus_literal(x) + "}" for x in value)
+            return f"{{{inner}}}"
+        # Handle char arrays
+        elif all(isinstance(x, str) and len(x) == 1 for x in value):
+            return f"{{" + ",".join(f"'{x}'" for x in value) + "}}"
+        else:
+            return "{" + ",".join(convert_to_cplusplus_literal(x) for x in value) + "}"
+    else:
+        raise TypeError(f"Unsupported type: {type(value)}")
 
 
 

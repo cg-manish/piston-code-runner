@@ -7,13 +7,16 @@ from utils.code_wrapper import *
 PISTON_URL = "http://localhost:2000/api/v2/execute"
 
 def validate_function_in_code(function_name: str, user_code: str, language: str):
-    if language.name.lower() == "python":
-        return function_name in user_code
-    elif language.name.lower() == "csharp.net":
-        return function_name in user_code
-    elif language.name.lower()=="java":
-        return function_name in user_code
-    return False
+    # if language.name.lower() == "python":
+    #     return function_name in user_code
+    # elif language.name.lower() == "csharp.net":
+    #     return function_name in user_code
+    # elif language.name.lower()=="java":
+    #     return function_name in user_code
+    # elif language.name.lower()=="c++":
+    #     return function_name in user_code
+    # return False
+    return function_name in user_code
 
 
 def execute_code(language: Language, function_name: str, code: str, test_cases: list)-> List[CodeExecutionResult]:
@@ -35,7 +38,7 @@ def execute_code(language: Language, function_name: str, code: str, test_cases: 
             "language": language.name.lower(),
             "version": language.version,
             "files": [
-                {"name": "main", "content": exec_code}
+                {"name": "main", "content":exec_code}
                 ],
         }
 

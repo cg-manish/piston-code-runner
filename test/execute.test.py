@@ -7,6 +7,8 @@ import requests
 PISTON_URL = "http://localhost:2000/api/v2/execute"
 CODE_RUNNER_LOCAL_URL="http://localhost:7000/execute"
 
+# java lang= java
+# java version= 15.0.2 or 15.2.0 one or the other
 java_code="""
 class Solution {
     public int[] twoSum(int[] nums, int target) {
@@ -17,16 +19,9 @@ class Solution {
 }
 """
 
-java_code="""
-class Solution {
-    public int[] twoSum(int[] nums, int target) {
-        int[] result= {5,6};
-        return result;
-        
-    }
-}
-"""
 
+# chsarp lang= chsarp.net
+# chsarp version= 5.0.201
 csarp_code="""
 public class Solution {
     public int[] TwoSum(int[] nums, int target) {
@@ -42,6 +37,59 @@ public class Solution {
 }
 """
 
+# c++ lang= c++
+# runtime=gcc
+# c++ version= 10.2.0
+cpp_code="""
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        int n = nums.size();
+        unordered_map<int, int> prevMap; 
+
+        for (int i = 0; i < n; i++) {
+            int diff = target - nums[i];
+            if (prevMap.find(diff) != prevMap.end()) {
+                return {prevMap[diff], i};
+            }
+            prevMap.insert({nums[i], i});
+        }
+        return {};
+    }
+};
+"""
+
+
+# js lang= javascript
+# js version=20.11.1
+# runtime= node
+
+js_code="""
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} target
+     * @return {number[]}
+     */
+    twoSum(nums, target) {
+        const indices = {};  // val -> index
+
+        for (let i = 0; i < nums.length; i++) {
+            indices[nums[i]] = i;
+        }
+
+        for (let i = 0; i < nums.length; i++) {
+            let diff = target - nums[i];
+            if (indices[diff] !== undefined && indices[diff] !== i) {
+                return [i, indices[diff]];
+            }
+        }
+
+        return [];
+    }
+}
+"""
+# 
 def test_execute():
         
 
@@ -75,9 +123,9 @@ def test_run_local():
         "test_cases": [
         {"input":[[2,7,11,15],9], "expected_output": [0,1]}
         ],
-        "function_name":"TwoSum",
-        "language":{"name":"csharp.net", "version":"5.0.201"},
-         "user_submitted_code": csarp_code
+        "function_name":"twoSum",
+        "language":{"name":"javascript", "version":"20.11.1"},
+         "user_submitted_code": js_code
         }
 
         try:
