@@ -50,191 +50,49 @@ class Program {{
 }}
 """
 
+def _convert_to_java_literal(value):
+    """
+    Recursively converts Python object to Java literal string.
+    Supports: int, str, list, nested lists, etc.
+    """
+    if isinstance(value, str):
+        return f'"{value}"'
+    elif isinstance(value, bool):
+        return "true" if value else "false"
+    elif isinstance(value, (int, float)):
+        return str(value)
+    elif isinstance(value, list):
+        # Determine if it's a list of lists (for arrays)
+        if all(isinstance(x, list) for x in value):
+            inner = ",".join("{" + _convert_to_java_literal(x) + "}" for x in value)
+            return "new int[][]{" + inner + "}"
+        elif all(isinstance(x, str) and len(x) == 1 for x in value):
+            return "new char[]{" + ",".join("'" + x + "'" for x in value) + "}"
+        else:
+            return "new int[]{" + ",".join(_convert_to_java_literal(x) for x in value) + "}"
+    else:
+        raise TypeError(f"Unsupported type: {type(value)}")
+
 # Java Wrapper
 def wrap_java_code_runner(user_code: str, function_name: str, args: list) -> str:
-    args_formatted = ", ".join(map(str, args))
-    return f"""
+    java_args = ", ".join(_convert_to_java_literal(arg) for arg in args)
 
-       {user_code}
+    template_code= """
+public class Program {
 
-public class Program {{
-    public static void main(String[] args) {{
-        Solution sol = new Solution();
-        int[] arr = new int[]{{ {args_formatted} }};
-        var result = sol.{function_name}(arr);
-        System.out.println(result);
-    }}
-}}
-"""
+    public static void main(String[] args){
+        Solution solution = new Solution();
+        var result=solution.<<FUNCTION_NAME>>(<<ARGS>>);
+        System.out.println(java.util.Arrays.toString(result));
+    }
+}"""
+    template_code= template_code.replace("<<ARGS>>", java_args)
+    template_code= template_code.replace("<<FUNCTION_NAME>>", function_name)
+    final_code=f"{template_code} \n\n{user_code}"
 
-# Ruby Wrapper
-def wrap_ruby_code_runner(user_code: str, function_name: str, args: list) -> str:
-    args_formatted = ", ".join(map(str, args))
-    return f"""
-{user_code}
+    return final_code
 
-if __FILE__ == $0
-  sol = Solution.new
-  result = sol.{function_name}([ {args_formatted} ])
-  puts result
-end
-"""
 
-# Swift Wrapper
-def wrap_swift_code_runner(user_code: str, function_name: str, args: list) -> str:
-    args_formatted = ", ".join(map(str, args))
-    return f"""
-{user_code}
-
-let sol = Solution()
-let result = sol.{function_name}([ {args_formatted} ])
-print(result)
-"""
-
-# Go Wrapper
-def wrap_go_code_runner(user_code: str, function_name: str, args: list) -> str:
-    args_formatted = ", ".join(map(str, args))
-    return f"""
-package main
-
-import "fmt"
-
-{user_code}
-
-func main() {{
-    sol := Solution{{}}
-    result := sol.{function_name}([]int{{ {args_formatted} }})
-    fmt.Println(result)
-}}
-"""
-
-# Scala Wrapper
-def wrap_scala_code_runner(user_code: str, function_name: str, args: list) -> str:
-    args_formatted = ", ".join(map(str, args))
-    return f"""
-object Program {{
-    {user_code}
-
-    def main(args: Array[String]): Unit = {{
-        val sol = new Solution()
-        val result = sol.{function_name}(Array({args_formatted}))
-        println(result.mkString(","))
-    }}
-}}
-"""
-
-# Kotlin Wrapper
-def wrap_kotlin_code_runner(user_code: str, function_name: str, args: list) -> str:
-    args_formatted = ", ".join(map(str, args))
-    return f"""
-fun main() {{
-    val sol = Solution()
-    val result = sol.{function_name}(arrayOf({args_formatted}))
-    println(result.joinToString(","))
-}}
-
-{user_code}
-"""
-
-# # Rust Wrapper
-# def wrap_rust_code_runner(user_code: str, function_name: str, args: list) -> str:
-#     args_formatted = ", ".join(map(str, args))
-#     return f"""
-# {user_code}
-
-# fn main() {{
-#     let sol = Solution::new();
-#     let result = sol.{function_name}(vec![{args_formatted}]);
-#      # TODO: Fix this line below for rust
-#      # println!("{:?}", result);
-# }}
-# """
-
-# C++ Wrapper
-def wrap_cpp_code_runner(user_code: str, function_name: str, args: list) -> str:
-    args_formatted = ", ".join(map(str, args))
-    return f"""
-#include <iostream>
-#include <vector>
-using namespace std;
-
-{user_code}
-
-int main() {{
-    Solution sol;
-    vector<int> args = {{{args_formatted}}};
-    auto result = sol.{function_name}(args);
-    for (const auto& elem : result) {{
-        cout << elem << " ";
-    }}
-    cout << endl;
-}}
-"""
-
-# C Wrapper
-def wrap_c_code_runner(user_code: str, function_name: str, args: list) -> str:
-    args_formatted = ", ".join(map(str, args))
-    return f"""
-#include <stdio.h>
-#include <stdlib.h>
-
-{user_code}
-
-int main() {{
-    int args[] = {{ {args_formatted} }};
-    {function_name}(args, sizeof(args)/sizeof(args[0]));
-    return 0;
-}}
-"""
-
-# Dotnet (C#) Wrapper
-def wrap_dotnet_code_runner(user_code: str, function_name: str, args: list) -> str:
-    args_formatted = ", ".join(map(str, args))
-    return f"""
-using System;
-using System.Collections.Generic;
-
-{user_code}
-
-class Program {{
-    static void Main(string[] args) {{
-        var sol = new Solution();
-        var result = sol.{function_name}(new List<int>{{ {args_formatted} }});
-        Console.WriteLine(string.Join(",", result));
-    }}
-}}
-"""
-
-# JavaScript Wrapper
-def wrap_javascript_code_runner(user_code: str, function_name: str, args: list) -> str:
-    args_formatted = ", ".join(map(str, args))
-    return f"""
-{user_code}
-
-const sol = new Solution();
-const result = sol.{function_name}([{args_formatted}]);
-console.log(result);
-"""
-
-# TypeScript Wrapper
-def wrap_typescript_code_runner(user_code: str, function_name: str, args: list) -> str:
-    args_formatted = ", ".join(map(str, args))
-    return f"""
-{user_code}
-
-const sol = new Solution();
-const result = sol.{function_name}([{args_formatted}]);
-console.log(result);
-"""
-
-# Bash Wrapper
-def wrap_bash_code_runner(user_code: str, function_name: str, args: list) -> str:
-    args_str = " ".join(map(str, args))
-    return f"""
-#!/bin/bash
-{user_code}
-{function_name} {args_str}
-"""
 
 
 def parse_returned_from_stdout(stdout, output):

@@ -16,16 +16,13 @@ def execute():
 
     try:
         data = request.get_json()
-
-        question_id = data.get("question_id")
-        user_id = data.get("user_id")
         user_submitted_code = data.get("user_submitted_code")
         test_cases = data.get("test_cases")
         function_name = data.get("function_name")
         language = data.get("language") 
         
-        if not all([question_id, user_id, user_submitted_code, test_cases, function_name, language]):
-            return jsonify({"status": "error", "message": "Missing required fields"}), 400
+        if not all([ user_submitted_code, test_cases, function_name, language]):
+            return jsonify({"status": "error", "message": "Missing required fields", "sent_field":[]}), 400
         
         results=execute_code(function_name=function_name, 
                             code= user_submitted_code, 
@@ -35,9 +32,8 @@ def execute():
         print(results)
         results_dict = [r.to_dict() for r in results]
 
-        json_data = json.dumps(results_dict, indent=1)
-
-        return jsonify({"data":json_data, "status_code":200})
+        json_data = json.dumps(results_dict)
+        return json.dumps({"data":results_dict, "status_code":200})
     except Exception as e:
         # print(str(e))
         return {"error":str(e)}
@@ -45,4 +41,4 @@ def execute():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0")
+    app.run(debug=True, host="0.0.0.0", port=7000)
