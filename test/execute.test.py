@@ -6,9 +6,11 @@ import requests
 
 PISTON_URL = "http://localhost:2000/api/v2/execute"
 CODE_RUNNER_LOCAL_URL="http://localhost:7000/execute"
+CODE_RUNNER_LIVE_URL="https://code-runner.macgain.net/execute"
 
 # java lang= java
 # java version= 15.0.2 or 15.2.0 one or the other
+java_lang={"name":"java", "version":"15.0.2"}
 java_code="""
 class Solution {
     public int[] twoSum(int[] nums, int target) {
@@ -22,7 +24,10 @@ class Solution {
 
 # chsarp lang= chsarp.net
 # chsarp version= 5.0.201
+csharp_lang={"name":"csharp.net", "version":"5.0.201"}
+
 csarp_code="""
+
 public class Solution {
     public int[] TwoSum(int[] nums, int target) {
         for (int i = 0; i < nums.Length; i++) {
@@ -63,6 +68,7 @@ public:
 # js lang= javascript
 # js version=20.11.1
 # runtime= node
+javascript_lang={"name":"javascript", "version":"20.11.1"}
 
 js_code="""
 class Solution {
@@ -85,32 +91,32 @@ class Solution {
             }
         }
 
-        return [];
+        return [12,2,4445];
     }
 }
 """
 # 
-def test_execute():
+# def test_execute():
         
 
-        payload={
-"language":"java", "version":"15.0.2",
-"files":[
-    {"name":"main", "content": generate_java_code([[2,7,11,15],9])}
-]
-        }
+#         payload={
+# "language":"java", "version":"15.0.2",
+# "files":[
+#     {"name":"main", "content": generate_java_code([[2,7,11,15],9])}
+# ]
+#         }
 
-        print(payload)
+#         print(payload)
 
-        try:
-            result= requests.post(PISTON_URL, json=payload, 
-                                headers={"Content-Type": "application/json"})
-            print(result.json())
-            if result.json():
-                with open("./result.json" , "w") as aaa:
-                    aaa.writelines(result.json()["data"])
-        except Exception as e:
-             print(e)
+#         try:
+#             result= requests.post(PISTON_URL, json=payload, 
+#                                 headers={"Content-Type": "application/json"})
+#             print(result.json())
+#             if result.json():
+#                 with open("./result.json" , "w") as aaa:
+#                     aaa.writelines(result.json()["data"])
+#         except Exception as e:
+#              print(e)
 
 
 
@@ -123,13 +129,13 @@ def test_run_local():
         "test_cases": [
         {"input":[[2,7,11,15],9], "expected_output": [0,1]}
         ],
-        "function_name":"twoSum",
-        "language":{"name":"javascript", "version":"20.11.1"},
-         "user_submitted_code": js_code
+        "function_name":"TwoSum",
+        "language":csharp_lang,
+         "user_submitted_code": csarp_code
         }
 
         try:
-            result= requests.post(CODE_RUNNER_LOCAL_URL, json=payload, 
+            result= requests.post(CODE_RUNNER_LIVE_URL, json=payload, 
                                 headers={"Content-Type": "application/json"})
             print(result.json())
             # if result.json():
@@ -139,4 +145,3 @@ def test_run_local():
              print(e)
 
 test_run_local()
-# test_execute()
