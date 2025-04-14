@@ -4,6 +4,7 @@ import requests
 from execute import execute_code
 from models.models import Language
 import base64
+from requests import HTTPError
 
 app = Flask(__name__)
 
@@ -36,7 +37,7 @@ def execute():
         return json.dumps({"data":results_dict, "status_code":200})
     except Exception as e:
         # print(str(e))
-        return {"error":str(e)}
+        return {"error":str()}
 
 
 

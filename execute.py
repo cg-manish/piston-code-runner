@@ -9,7 +9,7 @@ PISTON_URL = "http://localhost:2000/api/v2/execute"
 def validate_function_in_code(function_name: str, user_code: str, language: str):
     if language.name.lower() == "python":
         return function_name in user_code
-    elif language.name.lower() == "csharp":
+    elif language.name.lower() == "csharp.net":
         return function_name in user_code
     elif language.name.lower()=="java":
         return function_name in user_code
@@ -18,7 +18,7 @@ def validate_function_in_code(function_name: str, user_code: str, language: str)
 
 def execute_code(language: Language, function_name: str, code: str, test_cases: list)-> List[CodeExecutionResult]:
     if not validate_function_in_code(function_name, code, language):
-        return [{"error": f"Function '{function_name}' not found in submitted code."}]
+        raise ValueError( [{"error": f"Function '{function_name}' not found in submitted code."}])
     
     results=[]
 
@@ -53,7 +53,7 @@ def execute_code(language: Language, function_name: str, code: str, test_cases: 
         except Exception as e:
             print("Code execution error")
             print(e)
-            results.append(CodeExecutionResult(case= case, status = 1, error=e, data= None))
+            results.append(CodeExecutionResult(case= case, status = 1, error=str(e), data= None))
     return results
 
 """ Data expected by code executor: 
