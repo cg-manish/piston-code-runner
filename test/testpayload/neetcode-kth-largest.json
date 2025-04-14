@@ -1,0 +1,10 @@
+{
+    "data": {
+        "problemId": "kth-largest-integer-in-a-stream",
+        "rawCode": "class KthLargest {\n\n    public KthLargest(int k, int[] nums) {\n        \n    }\n    \n    public int add(int val) {\n        return 1;\n    }\n}\n",
+        "lang": "java",
+        "testCases": [
+            "[\"KthLargest\", [3, [1, 2, 3, 3]], \"add\", [3], \"add\", [5], \"add\", [6], \"add\", [7], \"add\", [8]]"
+        ]
+    }
+}
