@@ -12,7 +12,7 @@ def wrap_code_runner(language: Language, user_code: str, function_name: str, arg
 
     if lang == "python":
         return wrap_python_code_runner(user_code, function_name, args)
-    elif lang == "csharp":
+    elif lang == "csharp.net":
         return wrap_csharp_code_runner(user_code, function_name, args)
     elif lang =="java":
         return wrap_java_code_runner(user_code, function_name, args)
@@ -32,23 +32,50 @@ if __name__ == "__main__":
     print(result)
 """
 
+def __convert_to_csharp_literal__(value):
+    """
+    Recursively converts Python object to C# literal string.
+    Supports: int, str, bool, list (arrays), and nested lists.
+    """
+    if isinstance(value, str):
+        return f'"{value}"'
+    elif isinstance(value, bool):
+        return "true" if value else "false"
+    elif isinstance(value, (int, float)):
+        return str(value)
+    elif isinstance(value, list):
+        # Handle lists of lists (for multi-dimensional arrays)
+        if all(isinstance(x, list) for x in value):
+            inner = ",".join("{" + __convert_to_csharp_literal__(x) + "}" for x in value)
+            return f"new int[,]{{{inner}}}"
+        # Handle char arrays
+        elif all(isinstance(x, str) and len(x) == 1 for x in value):
+            return f"new char[]{{" + ",".join(f"'{x}'" for x in value) + "}"
+        else:
+            return "new int[]{" + ",".join(__convert_to_csharp_literal__(x) for x in value) + "}"
+    else:
+        raise TypeError(f"Unsupported type: {type(value)}")
+    
 # C# Wrapper
 def wrap_csharp_code_runner(user_code: str, function_name: str, args: list) -> str:
-    args_formatted = ", ".join(map(str, args))
-    return f"""
+    csharp_args = ", ".join(__convert_to_csharp_literal__(arg) for arg in args)
+
+    template_code="""
 using System;
 using System.Collections.Generic;
 
-{user_code}
-
-class Program {{
-    static void Main(string[] args) {{
+class Program {
+    static void Main(string[] args) {
         var sol = new Solution();
-        var result = sol.{function_name}(new List<int>{{ {args_formatted} }});
+        var result = sol.<<FUNCTION_NAME>>(<<ARGS>>);
         Console.WriteLine(string.Join(",", result));
-    }}
-}}
+    }
+}
 """
+    template_code= template_code.replace("<<ARGS>>", csharp_args)
+    template_code= template_code.replace("<<FUNCTION_NAME>>", function_name)
+    final_code=f"{template_code} \n\n{user_code}"
+    return final_code
 
 def _convert_to_java_literal(value):
     """

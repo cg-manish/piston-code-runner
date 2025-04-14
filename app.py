@@ -39,7 +39,7 @@ def execute():
         return json.dumps({"data":results_dict, "status_code":200})
     except Exception as e:
         # print(str(e))
-        return {"error":str(e)}
+        return {"error":str()}
 
 
 
