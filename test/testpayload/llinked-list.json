@@ -1,0 +1,6 @@
+{
+    "lang": "java",
+    "question_id": "206",
+    "typed_code": "/**\n * Definition for singly-linked list.\n * public class ListNode {\n *     int val;\n *     ListNode next;\n *     ListNode() {}\n *     ListNode(int val) { this.val = val; }\n *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }\n * }\n */\nclass Solution {\n    public ListNode reverseList(ListNode head) {\n        return new int[]{1,2,4};\n    }\n}",
+    "data_input": "[1,2,3,4,5]\n[1,2]\n[]"
+}
